@@ -29,8 +29,7 @@ session_start();
                 //exit();
                 
                 if($resultado->num_rows > 0){
-                    $_SESSION['usuario'] = $nomeDigitado;//variavel de sessão para armazenar o nome do usuário logado4
-                    
+                    $_SESSION['usuario'] = $nomeDigitado;//variavel de sessão para armazenar o nome do usuário logado
                     $usuario = $resultado->fetch_assoc();
                     $_SESSION['id'] = $usuario['id'];
                     // var_dump($usuario);

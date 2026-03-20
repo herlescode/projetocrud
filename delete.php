@@ -2,7 +2,7 @@
 session_start();
 require_once 'config.php';
 
-if (!isset($_SESSION['id'])){
+if (!isset($_SESSION['id'])){ //verifica se o usuário está logado, caso contrário, ele é redirecionado para a página de login
     header("Location: login.php");
     exit();
 }
@@ -20,9 +20,9 @@ if(isset($_GET['excluir'])){
     $sql = "DELETE FROM usuarios WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $_GET['excluir']);//bind_param() é um método da classe mysqli_stmt que é usado para vincular os parâmetros de uma consulta preparada. O primeiro argumento é uma string que especifica os tipos de dados dos parâmetros (neste caso, "i" para inteiro), e os argumentos subsequentes são as variáveis que contêm os valores a serem vinculados aos parâmetros da consulta.
-    
+
     $stmt->execute();
-    
+
     header("Location: delete.php");
     exit();
     // if($stmt->execute() === TRUE){
@@ -31,12 +31,7 @@ if(isset($_GET['excluir'])){
     //     echo "Erro ao excluir registro: " . $conn->error;
     // }
 }
-if (isset($_GET['atualizar'])) {
-    $sql = "UPDATE usuarios SET nome = ?, senha = ? WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $_GET['nome'], $_GET['senha'], $_GET['atualizar']);
-    $stmt->execute();
-}
+
 $sql = "SELECT * FROM usuarios";
 $resultado = $conn->query($sql); //retorna um objeto do tipo mysqli_result, que possui o método num_rows para verificar a quantidade de registros retornados e o método fetch_assoc() para obter os dados dos registros em forma de array associativo
 $registros = [];
@@ -61,7 +56,7 @@ $conn->close();
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-   
+
     <div class="container mt-3 d-flex justify-content-center align-items-center vh-100">
          <h3>Usuários</h3>
             <table class="table table-hover table-bordered">
@@ -79,13 +74,13 @@ $conn->close();
                             <td><?php echo $row['senha']; ?></td>
                             <td>
                                 <a href="?excluir=<?php echo $row['id']; ?>" class="btn btn-danger">Excluir</a>
-                                <a href="?excluir=<?php echo $row['id']; ?>" class="btn btn-danger">Atualizar</a>
+                                <a href="atualizar.php?id=<?php echo $row['id']; ?>" class="btn btn-warning">Atualizar</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
 
-            </table>    
+            </table>
     </div>
 </body>
 </html>
