@@ -23,30 +23,15 @@ session_start();
                // echo'campo senha é obrigatório <br>';
             }
             if(!$erroNome && !$erroSenha){
-                $sql = "SELECT * FROM usuarios WHERE nome = '$nomeDigitado' AND senha = '$senhaDigitada'";
+                $sql = "INSERT INTO usuarios (nome, senha) VALUES ('$nomeDigitado', '$senhaDigitada')";
                 $resultado = $conn->query($sql);
                 //var_dump($usuario);
                 //exit();
 
-                if($resultado->num_rows > 0){
-                    $_SESSION['usuario'] = $nomeDigitado;//variavel de sessão para armazenar o nome do usuário logado
-                    $usuario = $resultado->fetch_assoc();
-                    $_SESSION['id'] = $usuario['id'];
-                    // var_dump($usuario);
-                    // var_dump(!$usuario['adm']);
-                    // exit();
-                    //$mensagem = "Login realizado com sucesso!";
-
-                    if ($usuario['adm'] == 0) {//verifica se o usuário é um administrador ou não, se for um usuário comum, ele é redirecionado para a página de consulta, caso contrário, ele é redirecionado para a página de exclusão
-                        header("Location: consultar.php");
-                        exit();
-                    } else {
-                        header("Location: delete.php");
-                        exit();
-                    }
+                if($resultado === TRUE){
+                    $mensagem = "<div class='alert alert-danger text-center py-4'>Cadastro realizado com sucesso! <br> <a href='login.php' class='alert-link'>Faça login</a></div>";
                 } else {
-                   //$mensagem = "Nome ou senha incorretos! <br> <a href='cadastro.php'>Novo cadastro</a>";
-                   $mensagem = "<div class='alert alert-danger text-center py-4'>Nome ou senha incorretos! <br> <a href='cadastro.php' class='alert-link'>Novo cadastro</a></div>";
+                    $mensagem = "Erro ao cadastrar usuário: " . $conn->error;
                 }
             }
     };
@@ -64,10 +49,12 @@ session_start();
 <body>
 
      <div class="d-flex justify-content-center align-items-center vh-100">
+
          <form action = "#" method="POST" class="container mt-5 col-md-4">
             <?= $mensagem ?>
             <div class="d-flex justify-content-between align-items-center mb-3 w-100">
-                <h3>Login</h3>
+                <h3>Novo Cadastro</h3>
+                <a href="login.php" class="btn btn-secondary">Sair / Voltar</a>
             </div>
             <div class="mb-3">
                 <label for="InputEmail" class="form-label">Nome</label>
@@ -85,8 +72,8 @@ session_start();
                 <div class="mb-3 form-check">
                 </div>
                 <div class="d-flex justify-content-between mt-3">
-                    <button type="submit" class="btn btn-primary w-50 me-2">Login</button>
-                    <a href="login.php" class="btn btn-secondary w-50">Apagar</a>
+                    <button type="submit" class="btn btn-primary w-50 me-2">Cadastrar</button>
+                    <a href="login.php" class="btn btn-secondary w-50">Voltar</a>
                 </div>
             </form>
      </div>

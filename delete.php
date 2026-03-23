@@ -8,7 +8,7 @@ if (!isset($_SESSION['id'])){ //verifica se o usuário está logado, caso contr�
 }
 
 $sql = "SELECT * FROM usuarios WHERE id = " . $_SESSION['id'];
-                $resultado = $conn->query($sql);
+$resultado = $conn->query($sql);
 $usuario = $resultado->fetch_assoc();
 
 if ($usuario['adm'] == 0) {
@@ -57,9 +57,14 @@ $conn->close();
 </head>
 <body>
 
-    <div class="container mt-3 d-flex justify-content-center align-items-center vh-100">
-         <h3>Usuários</h3>
-            <table class="table table-hover table-bordered">
+    <div class="container mt-4 d-flex flex-column justify-content-center vh-100">
+
+        <div class="d-flex justify-content-between align-items-center mb-3 w-100">
+            <h3>Painel de Controle</h3>
+            <a href="login.php" class="btn btn-secondary">Sair / Voltar</a>
+        </div>
+
+        <table class="table table-hover table-bordered w-100">
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -79,8 +84,8 @@ $conn->close();
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
-
             </table>
     </div>
+
 </body>
 </html>

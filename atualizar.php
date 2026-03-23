@@ -21,6 +21,23 @@ if (isset($_GET['id'])) {
     exit();
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $novoNome = $_POST['nome'];
+    $novaSenha = $_POST['senha'];
+
+    $id_usuario = $_GET['id'];
+
+    $sql = "UPDATE usuarios SET nome = ?, senha = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssi", $novoNome, $novaSenha, $id_usuario);
+
+    if($stmt->execute()) {
+        header("Location: delete.php");
+        exit();
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +50,7 @@ if (isset($_GET['id'])) {
 </head>
 <body>
     <div class="container mt-3 d-flex justify-content-center align-items-center vh-100">
-        <form action="atualizar.php" method="POST">
+        <form action="" method="POST">
             <input type="hidden" name="atualizar" value="<?php echo $registro['id']; ?>">
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
